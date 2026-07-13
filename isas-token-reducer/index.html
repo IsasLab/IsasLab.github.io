@@ -263,7 +263,7 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
   .loop-stage { position: relative; height: var(--rc-stage-h); overflow: hidden; }
   .rc-track {
     display: flex; width: 100%; height: 100%;
-    transition: transform .55s cubic-bezier(.22,.61,.36,1);
+    transition: transform .4s cubic-bezier(.22,.61,.36,1);
     will-change: transform;
   }
   .rc-card {
@@ -498,9 +498,8 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
       <div class="hero-logo"><img src="isas-token-reducer.png" alt="Token Reducer logo" width="92" height="92"></div>
       <span class="pill"><span class="dot"></span> Runs 100% offline</span>
       <h1 class="title">Token Reducer</h1>
-      <p class="tagline">Humanity built powerful AI. Now we optimize its fuel.</p>
-      <p class="subhead">A Claude Skill that strips redundant tokens <em>before</em> Claude reads them — so every token you pay for earns its place.</p>
-      <p style="margin: 14px 0 0;"><span class="pill"><span class="dot"></span> Claude Code + Claude.ai · deletes, never rewrites</span></p>
+      <p class="tagline">Stop paying for junk words.</p>
+      <p class="subhead">An AI charges you for every word you send it. Token Reducer quietly deletes the repeated and padded ones — <em>never</em> your numbers, prices, dates, or quotes — so you pay for less.</p>
 
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg" href="#demo">
@@ -518,30 +517,21 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
         <span class="founder">Built by Ismet Çakır</span>
       </div>
 
-      <details class="demo-details" style="margin-top:16px;">
-        <summary>What does "Noncommercial" mean for me?
-          <svg class="chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-        </summary>
-        <div class="body">
-          Free for personal use — research, experimentation, hobby projects, and study. Also free for charitable, educational, public-research, and government use, regardless of funding source. If your company uses it for commercial work, that's outside this license — <a href="https://github.com/IsasLab/isas-token-reducer/blob/main/LICENSE">read the full PolyForm Noncommercial terms</a> or contact the author about a commercial license.
-        </div>
-      </details>
-
-      <!-- SHOWCASE — 4-example carousel of before → after reductions.
+      <!-- SHOWCASE — 2-example carousel of before → after reductions.
            Decorative (aria-hidden); the real, readable summary is the .loop-cap below. -->
       <div class="hero-loop" id="heroLoop" aria-hidden="true">
         <div class="loop-head">
           <span class="loop-dots"><i></i><i></i><i></i></span>
           <span class="loop-title">reduce.py</span>
-          <span class="loop-seg" id="loopSeg">1/4</span>
+          <span class="loop-seg" id="loopSeg">1/2</span>
           <span class="loop-pct" id="loopPct">0%</span>
         </div>
         <div class="loop-stage">
           <div class="rc-track" id="rcTrack">
 
-            <!-- 1 · EXACT DUPLICATE -->
+            <!-- 1 · REPEATED LINE -->
             <div class="rc-card">
-              <span class="rc-tag dup">exact duplicate</span>
+              <span class="rc-tag dup">repeated line</span>
               <div class="rc-before">
                 <div class="rc-line">Refund policy: returns within <b class="rc-num">30</b> days.</div>
                 <div class="rc-line rc-drop">Refund policy: returns within 30 days.</div>
@@ -552,9 +542,9 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
               </div>
             </div>
 
-            <!-- 2 · FILLER -->
+            <!-- 2 · FILLER WORDS -->
             <div class="rc-card">
-              <span class="rc-tag fill">filler</span>
+              <span class="rc-tag fill">filler words</span>
               <div class="rc-before">
                 <div class="rc-line"><span class="rc-cut">It is important to note that </span>shipping is non-refundable.</div>
               </div>
@@ -564,39 +554,14 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
               </div>
             </div>
 
-            <!-- 3 · WORDY PHRASE -->
-            <div class="rc-card">
-              <span class="rc-tag word">wordy phrase</span>
-              <div class="rc-before">
-                <div class="rc-line">Orders ship free <span class="rc-cut">due to the fact that</span> you spent over <b class="rc-num">$200</b>.</div>
-              </div>
-              <div class="rc-arrow">↓</div>
-              <div class="rc-after">
-                <div class="rc-line">Orders ship free <span class="rc-add">because</span> you spent over <b class="rc-num">$200</b>.</div>
-              </div>
-            </div>
-
-            <!-- 4 · NEAR-DUPLICATE -->
-            <div class="rc-card">
-              <span class="rc-tag near">near-duplicate</span>
-              <div class="rc-before">
-                <div class="rc-line">Returns accepted within <b class="rc-num">30</b> days of purchase.</div>
-                <div class="rc-line rc-drop">Returns are accepted within thirty days of the purchase date.</div>
-              </div>
-              <div class="rc-arrow">↓</div>
-              <div class="rc-after">
-                <div class="rc-line">Returns accepted within <b class="rc-num">30</b> days of purchase.</div>
-              </div>
-            </div>
-
           </div>
         </div>
         <div class="loop-foot">
-          <span class="loop-nav"><i class="on"></i><i></i><i></i><i></i></span>
+          <span class="loop-nav"><i class="on"></i><i></i></span>
           <span class="loop-bar"><i class="loop-fill"></i></span>
         </div>
       </div>
-      <p class="loop-cap">Duplicates and near-duplicates dropped, filler and wordy phrases trimmed — numbers, quotes, and facts stay untouched.</p>
+      <p class="loop-cap">The repeated line and filler get deleted — your facts and numbers stay exactly as you wrote them.</p>
     </div>
   </section>
 
@@ -845,12 +810,12 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
     var navDots = root.querySelectorAll(".loop-nav i");
     if (!track || !cards.length) return;
 
-    var TARGETS = [30, 45, 22, 40];   // realistic reduction per example
+    var TARGETS = [30, 45];   // realistic reduction per example
     var N = cards.length;
     var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     var raf = 0, tPlay = 0, tNext = 0, running = false, idx = 0;
-    var SLIDE = 620, HOLD = 3200;
+    var SLIDE = 480, HOLD = 1600;
 
     function setPct(v) { if (pctEl) pctEl.textContent = v + "%"; }
     function setSeg(i) { if (segEl) segEl.textContent = (i + 1) + "/" + N; }
@@ -893,7 +858,7 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
       apply(false);                               // slide in, before-state, meters at 0
       tPlay = setTimeout(function () {            // then run this example's reduction
         cards[idx].classList.add("play");
-        count(TARGETS[idx], 900);
+        count(TARGETS[idx], 520);
         setBar(TARGETS[idx]);
       }, SLIDE);
       tNext = setTimeout(function () { show((idx + 1) % N); }, HOLD);
@@ -902,8 +867,8 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
     function run() { if (!running) { running = true; show(idx % N); } }
     function halt() { running = false; clearAll(); }
 
-    if (reduced) {                                // static, no cycling: wordy-phrase card
-      idx = 2;                                    // best shows "$200 untouched" selling point
+    if (reduced) {                                // static, no cycling: repeated-line card
+      idx = 0;                                    // shows the "30 days" number kept intact
       apply(true);
       return;
     }
