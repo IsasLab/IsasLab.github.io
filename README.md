@@ -1,7 +1,7 @@
 # IsasLab hub (isaslab.github.io)
 
 The landing page for [IsasLab](https://isaslab.github.io/) — the index of all projects
-(ISAS Token Reducer, Gatherfire, and more).
+(Token Reducer, Gatherfire, and more).
 
 Self-contained static site: a single `index.html` with inlined CSS/JS (no build step,
 no external stylesheet) plus two images. Served by GitHub Pages at the root domain
