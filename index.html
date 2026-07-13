@@ -216,10 +216,12 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
     font-size: 13.5px; color: var(--text-soft);
   }
   .founder .av {
-    width: 22px; height: 22px; border-radius: 999px; overflow: hidden; flex: none;
-    background: #080e21; box-shadow: 0 0 0 1px rgba(150,170,225,0.30);
+    width: 22px; height: 22px; border-radius: 999px; flex: none;
+    display: grid; place-items: center;
+    background: var(--accent-soft); color: var(--accent-ink);
+    font: 700 10px/1 var(--sans); letter-spacing: -0.03em;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent);
   }
-  .founder .av img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   /* ---- project grid ---- */
   .projects { margin-top: 46px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
@@ -239,6 +241,9 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
     overflow: hidden;
   }
   .proj-ico img { width: 100%; height: 100%; object-fit: cover; }
+  .proj-ico.tr-logo { background: transparent; border-color: transparent; }
+  .proj-ico.tr-logo img { object-fit: contain; }
+  .footer .brand .fdot { width: 8px; height: 8px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 0 0 4px var(--accent-soft); flex: none; }
   .proj-ico svg { width: 22px; height: 22px; }
   .proj h3 { margin: 0 0 6px; font-size: 18px; font-weight: 660; letter-spacing: -0.01em; }
   .proj p { margin: 0; color: var(--text-soft); font-size: 14.5px; line-height: 1.55; }
@@ -261,6 +266,39 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
   a.proj:hover .arrow { transform: translateX(3px); }
 
   @media (max-width: 480px) { .hub-hero { padding: 72px 0 28px; } }
+
+  /* ---- language switcher ---- */
+  .lang-switch {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 8px 6px 10px; border-radius: 999px;
+    border: 1px solid var(--border-strong); background: var(--bg-card);
+    color: var(--text-soft);
+  }
+  .lang-switch > svg { flex: none; opacity: .85; }
+  .lang-switch select {
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    border: 0; background: transparent; color: var(--text);
+    font-family: var(--sans); font-size: 13.5px; font-weight: 600;
+    padding: 0 17px 0 2px; margin: 0; cursor: pointer; line-height: 1.4;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236a7480' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right center;
+  }
+  .lang-switch select:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  .lang-switch select option { color: var(--text); background: var(--bg-card); }
+  @media (max-width: 420px) { .lang-switch { padding: 6px 6px 6px 8px; gap: 4px; } .lang-switch select { font-size: 13px; } }
+
+  /* ---- footnote emphasis (styled via CSS so translated <b> keeps its colour) ---- */
+  .footnote b { color: var(--text-soft); }
+
+  /* ---- RTL support (Arabic) ---- */
+  [dir="rtl"] .arrow { transform: scaleX(-1); }
+  [dir="rtl"] a.proj:hover .arrow { transform: scaleX(-1) translateX(3px); }
+  [dir="rtl"] .lang-switch select { padding: 0 2px 0 17px; background-position: left center; }
+  [dir="rtl"] .eyebrow, [dir="rtl"] .tag, [dir="rtl"] .lic, [dir="rtl"] .proj-metric,
+  [dir="rtl"] h1.hub-title, [dir="rtl"] h2.sec-title, [dir="rtl"] .brand,
+  [dir="rtl"] .card h3, [dir="rtl"] .proj h3, [dir="rtl"] .sec-sub, [dir="rtl"] .hub-pitch {
+    letter-spacing: normal;
+  }
 </style>
 
 <div class="isas-root">
@@ -275,11 +313,22 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
         <span>IsasLab</span>
       </a>
       <nav class="nav-links">
-        <a class="ghost" href="#projects">Projects</a>
+        <a class="ghost" href="#projects" data-i18n="navProjects">Projects</a>
         <a class="stars" href="https://github.com/IsasLab/isas-token-reducer" data-stars-repo="IsasLab/isas-token-reducer" aria-label="GitHub stars">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77 5.82 21l1.18-6.88-5-4.87 7.1-1.01L12 2z"/></svg>
-          <span class="count-word">Star</span> <span class="count">·</span>
+          <span class="count-word" data-i18n="navStar">Star</span> <span class="count">·</span>
         </a>
+        <div class="lang-switch">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.6 6 3.6 9s-1.1 6.4-3.6 9c-2.5-2.6-3.6-6-3.6-9s1.1-6.4 3.6-9z"/></svg>
+          <select id="langSelect" aria-label="Language" data-i18n-aria="langLabel">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="tr">Türkçe</option>
+            <option value="ar">العربية</option>
+            <option value="zh">简体中文</option>
+          </select>
+        </div>
         <a class="btn btn-secondary btn-sm" href="https://github.com/IsasLab">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.42c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.74 1.27 3.4.97.11-.75.41-1.27.74-1.56-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.42.36.8 1.08.8 2.18v3.24c0 .31.2.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
           GitHub
@@ -294,16 +343,16 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
     <div class="grid-bg" aria-hidden="true"></div>
     <div class="wrap hub-hero-inner">
       <div class="hub-logo"><img src="logo-mark.png" alt="IsasLab logo" width="96" height="96"></div>
-      <h1 class="hub-title">Sharp, honest tools from <span class="lab">IsasLab</span></h1>
-      <p class="hub-pitch">A one-person lab building software that shows real numbers instead of marketing — small tools that do one thing and prove it.</p>
+      <h1 class="hub-title" data-i18n-html="heroTitle">Sharp, honest tools from <span class="lab">IsasLab</span></h1>
+      <p class="hub-pitch" data-i18n="heroPitch">A one-person lab building software that shows real numbers instead of marketing — small tools that do one thing and prove it.</p>
       <div class="hub-meta">
         <span class="founder">
-          <span class="av" aria-hidden="true"><img src="logo-mark.png" alt=""></span>
-          Built by Ismet Çakır
+          <span class="av" aria-hidden="true">IÇ</span>
+          <span data-i18n="builtBy">Built by Ismet Çakır</span>
         </span>
         <span class="lic">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M5 7l7-4 7 4M5 7l-2 5a3 3 0 0 0 6 0L5 7Zm14 0-2 5a3 3 0 0 0 6 0l-4-5Z"/></svg>
-          Source-available · free for personal use
+          <span data-i18n="heroLicense">Source-available · free for personal use</span>
         </span>
       </div>
     </div>
@@ -312,37 +361,37 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
   <!-- PROJECTS -->
   <section class="section" id="projects" style="padding-top: 20px;">
     <div class="wrap">
-      <p class="eyebrow">Projects</p>
-      <h2 class="sec-title">What's in the lab</h2>
-      <p class="sec-sub">Each project has its own page and repo. New ones dock onto the same grid — no redesign.</p>
+      <p class="eyebrow" data-i18n="projectsEyebrow">Projects</p>
+      <h2 class="sec-title" data-i18n="projectsTitle">What's in the lab</h2>
+      <p class="sec-sub" data-i18n="projectsSub">Each project has its own page and repo. New ones dock onto the same grid — no redesign.</p>
 
       <div class="projects">
 
         <!-- Token Reducer — Live -->
-        <a class="card proj" href="https://isaslab.github.io/isas-token-reducer/token-reducer/" aria-label="ISAS Token Reducer — open project page">
+        <a class="card proj" href="isas-token-reducer/index.html" aria-label="ISAS Token Reducer — open project page">
           <div class="proj-top">
-            <span class="proj-ico" aria-hidden="true"><img src="logo-mark.png" alt=""></span>
-            <span class="tag tag-live"><span class="tdot"></span> Live</span>
+            <span class="proj-ico tr-logo" aria-hidden="true"><img src="isas-token-reducer.png" alt=""></span>
+            <span class="tag tag-live"><span class="tdot"></span> <span data-i18n="tagLive">Live</span></span>
           </div>
           <h3>ISAS Token Reducer</h3>
-          <p>A Claude Skill that trims redundant tokens before Claude reads them — offline, safe, and measurable.</p>
+          <p data-i18n="trDesc">A Claude Skill that trims redundant tokens before Claude reads them — offline, safe, and measurable.</p>
           <div class="proj-foot">
-            <span>Open project <svg class="arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-            <span class="proj-metric"><b>~40%</b> fewer input tokens*</span>
+            <span><span data-i18n="projOpen">Open project</span> <svg class="arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="proj-metric" data-i18n-html="trMetric"><b>~40%</b> fewer input tokens*</span>
           </div>
         </a>
 
         <!-- Gatherfire — Building -->
-        <a class="card proj" href="https://github.com/IsasLab/gatherfire-native" aria-label="Gatherfire — view repository">
+        <a class="card proj" href="gatherfire/index.html" aria-label="Gatherfire — open project page">
           <div class="proj-top">
             <span class="proj-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s5 4 5 9a5 5 0 0 1-10 0c0-1.5.6-2.8 1.3-3.8C9 9.5 12 8 12 5.5"/><path d="M12 22a3.5 3.5 0 0 0 3.5-3.5c0-2-1.5-3-2.2-4-.6.9-1.3 1.4-1.3 2.5"/></svg></span>
-            <span class="tag tag-building"><span class="tdot"></span> Building</span>
+            <span class="tag tag-building"><span class="tdot"></span> <span data-i18n="tagBuilding">Building</span></span>
           </div>
           <h3>Gatherfire</h3>
-          <p>A native app in active development. Details are coming soon — follow along on the repo.</p>
+          <p data-i18n="gfDesc">A native app in active development. Details are coming soon — follow along on the repo.</p>
           <div class="proj-foot">
-            <span>View repo <svg class="arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-            <span class="proj-metric muted">private for now</span>
+            <span><span data-i18n="projOpen">Open project</span> <svg class="arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="proj-metric muted" data-i18n="gfMetric">private for now</span>
           </div>
         </a>
 
@@ -350,20 +399,20 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
         <div class="card proj placeholder">
           <div class="proj-top">
             <span class="proj-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
-            <span class="tag tag-soon"><span class="tdot"></span> Coming soon</span>
+            <span class="tag tag-soon"><span class="tdot"></span> <span data-i18n="tagSoon">Coming soon</span></span>
           </div>
-          <h3>The next tool</h3>
-          <p>Something small and useful is usually in the works. This slot is where it lands.</p>
+          <h3 data-i18n="nextTitle">The next tool</h3>
+          <p data-i18n="nextDesc">Something small and useful is usually in the works. This slot is where it lands.</p>
           <div class="proj-foot">
-            <span class="muted">Watch this space</span>
+            <span class="muted" data-i18n="nextMetric">Watch this space</span>
           </div>
         </div>
 
       </div>
 
-      <p class="sec-sub" style="margin-top: 26px; font-size: 13px; color: var(--text-faint); max-width: 60ch;">
+      <p class="sec-sub footnote" data-i18n-html="footnote" style="margin-top: 26px; font-size: 13px; color: var(--text-faint); max-width: 60ch;">
         *Illustrative: on redundant input, ISAS trims roughly 40% of tokens — about
-        <b style="color:var(--text-soft)">$120/mo</b> at 100M input tokens/month on Claude Sonnet ($3/1M).
+        <b>$120/mo</b> at 100M input tokens/month on Claude Sonnet ($3/1M).
         Real savings depend on your input; the tool reports your exact numbers.
       </p>
     </div>
@@ -373,13 +422,11 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
   <footer class="footer">
     <div class="wrap footer-inner">
       <a class="brand" href="index.html">
-        <span class="mark" aria-hidden="true">
-          <img src="logo-mark.png" alt="IsasLab logo" width="28" height="28">
-        </span>
+        <span class="fdot" aria-hidden="true"></span>
         <span>IsasLab</span>
       </a>
       <div class="meta">
-        <span>Built by Ismet Çakır</span>
+        <span data-i18n="builtBy">Built by Ismet Çakır</span>
         <a href="https://github.com/IsasLab">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.42c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.36-3.88-1.36-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.74 1.27 3.4.97.11-.75.41-1.27.74-1.56-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.42.36.8 1.08.8 2.18v3.24c0 .31.2.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
           github.com/IsasLab
@@ -389,6 +436,276 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
   </footer>
 
 </div>
+
+<script>
+/* ============================================================
+   IsasLab i18n — lightweight in-page localization.
+   - data-i18n="key"      -> element.textContent
+   - data-i18n-html="key" -> element.innerHTML (keys carrying markup)
+   - data-i18n-aria="key" -> element aria-label
+   Language is picked from ?lang / localStorage / browser, then EN.
+   Arabic switches the document to RTL. Falls back to EN per-key.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var I18N = {
+    "en": {
+      "metaTitle": "IsasLab — sharp, honest tools",
+      "metaDescription": "IsasLab is a small lab building sharp, honest software — real numbers over marketing. Home of the ISAS Token Reducer, Gatherfire, and more.",
+      "ogDescription": "A small lab building sharp, honest software — real numbers over marketing.",
+      "navProjects": "Projects",
+      "navStar": "Star",
+      "heroTitle": "Sharp, honest tools from <span class=\"lab\">IsasLab</span>",
+      "heroPitch": "A one-person lab building software that shows real numbers instead of marketing — small tools that do one thing and prove it.",
+      "builtBy": "Built by Ismet Çakır",
+      "heroLicense": "Source-available · free for personal use",
+      "projectsEyebrow": "Projects",
+      "projectsTitle": "What's in the lab",
+      "projectsSub": "Each project has its own page and repo. New ones dock onto the same grid — no redesign.",
+      "tagLive": "Live",
+      "tagBuilding": "Building",
+      "tagSoon": "Coming soon",
+      "trDesc": "A Claude Skill that trims redundant tokens before Claude reads them — offline, safe, and measurable.",
+      "projOpen": "Open project",
+      "trMetric": "<b>~40%</b> fewer input tokens*",
+      "gfDesc": "A native app in active development. Details are coming soon — follow along on the repo.",
+      "projViewRepo": "View repo",
+      "gfMetric": "private for now",
+      "nextTitle": "The next tool",
+      "nextDesc": "Something small and useful is usually in the works. This slot is where it lands.",
+      "nextMetric": "Watch this space",
+      "footnote": "*Illustrative: on redundant input, ISAS trims roughly 40% of tokens — about <b>$120/mo</b> at 100M input tokens/month on Claude Sonnet ($3/1M). Real savings depend on your input; the tool reports your exact numbers.",
+      "langLabel": "Language"
+    },
+    "de": {
+      "metaTitle": "IsasLab — scharfe, ehrliche Tools",
+      "metaDescription": "IsasLab ist ein kleines Lab, das scharfe, ehrliche Software baut — echte Zahlen statt Marketing. Heimat von ISAS Token Reducer, Gatherfire und mehr.",
+      "ogDescription": "Ein kleines Lab, das scharfe, ehrliche Software baut — echte Zahlen statt Marketing.",
+      "navProjects": "Projekte",
+      "navStar": "Star",
+      "heroTitle": "Scharfe, ehrliche Tools aus dem <span class=\"lab\">IsasLab</span>",
+      "heroPitch": "Ein Ein-Personen-Lab, das Software baut, die echte Zahlen zeigt statt Marketing — kleine Tools, die eine Sache tun und es beweisen.",
+      "builtBy": "Gebaut von Ismet Çakır",
+      "heroLicense": "Source-available · kostenlos für den privaten Gebrauch",
+      "projectsEyebrow": "Projekte",
+      "projectsTitle": "Was im Lab steckt",
+      "projectsSub": "Jedes Projekt hat seine eigene Seite und sein eigenes Repo. Neue docken am selben Raster an — kein Redesign.",
+      "tagLive": "Live",
+      "tagBuilding": "In Arbeit",
+      "tagSoon": "Bald verfügbar",
+      "trDesc": "Ein Claude Skill, der redundante Tokens kürzt, bevor Claude sie liest — offline, sicher und messbar.",
+      "projOpen": "Projekt öffnen",
+      "trMetric": "<b>~40%</b> weniger Input-Tokens*",
+      "gfDesc": "Eine native App in aktiver Entwicklung. Details folgen bald — bleib am Repo dran.",
+      "projViewRepo": "Repo ansehen",
+      "gfMetric": "vorerst privat",
+      "nextTitle": "Das nächste Tool",
+      "nextDesc": "Meistens ist etwas Kleines und Nützliches in Arbeit. Hier landet es.",
+      "nextMetric": "Bleib dran",
+      "footnote": "*Beispielhaft: bei redundantem Input kürzt ISAS rund 40% der Tokens — etwa <b>$120/mo</b> bei 100M Input-Tokens/Monat auf Claude Sonnet ($3/1M). Die tatsächliche Ersparnis hängt von deinem Input ab; das Tool nennt dir deine genauen Zahlen.",
+      "langLabel": "Sprache"
+    },
+    "es": {
+      "metaTitle": "IsasLab — herramientas precisas y honestas",
+      "metaDescription": "IsasLab es un pequeño laboratorio que crea software preciso y honesto — números reales en lugar de marketing. Hogar de ISAS Token Reducer, Gatherfire y más.",
+      "ogDescription": "Un pequeño laboratorio que crea software preciso y honesto — números reales en lugar de marketing.",
+      "navProjects": "Proyectos",
+      "navStar": "Star",
+      "heroTitle": "Herramientas precisas y honestas de <span class=\"lab\">IsasLab</span>",
+      "heroPitch": "Un laboratorio de una sola persona que crea software que muestra números reales en lugar de marketing — herramientas pequeñas que hacen una cosa y lo demuestran.",
+      "builtBy": "Creado por Ismet Çakır",
+      "heroLicense": "Código disponible · gratis para uso personal",
+      "projectsEyebrow": "Proyectos",
+      "projectsTitle": "Qué hay en el laboratorio",
+      "projectsSub": "Cada proyecto tiene su propia página y repo. Los nuevos se acoplan a la misma cuadrícula — sin rediseño.",
+      "tagLive": "Activo",
+      "tagBuilding": "En desarrollo",
+      "tagSoon": "Muy pronto",
+      "trDesc": "Un Claude Skill que recorta tokens redundantes antes de que Claude los lea — offline, seguro y medible.",
+      "projOpen": "Abrir proyecto",
+      "trMetric": "<b>~40%</b> menos tokens de entrada*",
+      "gfDesc": "Una app nativa en desarrollo activo. Los detalles llegan pronto — sigue el repo.",
+      "projViewRepo": "Ver repo",
+      "gfMetric": "privado por ahora",
+      "nextTitle": "La próxima herramienta",
+      "nextDesc": "Casi siempre hay algo pequeño y útil en marcha. Aquí es donde aterriza.",
+      "nextMetric": "Mantente atento",
+      "footnote": "*Ilustrativo: con entrada redundante, ISAS recorta cerca del 40% de los tokens — unos <b>$120/mo</b> con 100M de tokens de entrada al mes en Claude Sonnet ($3/1M). El ahorro real depende de tu entrada; la herramienta te muestra tus números exactos.",
+      "langLabel": "Idioma"
+    },
+    "tr": {
+      "metaTitle": "IsasLab — keskin, dürüst araçlar",
+      "metaDescription": "IsasLab, keskin ve dürüst yazılımlar geliştiren küçük bir lab — pazarlama yerine gerçek sayılar. ISAS Token Reducer, Gatherfire ve dahasının yuvası.",
+      "ogDescription": "Keskin ve dürüst yazılımlar geliştiren küçük bir lab — pazarlama yerine gerçek sayılar.",
+      "navProjects": "Projeler",
+      "navStar": "Yıldız",
+      "heroTitle": "<span class=\"lab\">IsasLab</span>'dan keskin, dürüst araçlar",
+      "heroPitch": "Pazarlama yerine gerçek sayıları gösteren yazılımlar geliştiren tek kişilik bir lab — tek bir işi yapan ve bunu kanıtlayan küçük araçlar.",
+      "builtBy": "Ismet Çakır tarafından geliştirildi",
+      "heroLicense": "Kaynağı açık · kişisel kullanım için ücretsiz",
+      "projectsEyebrow": "Projeler",
+      "projectsTitle": "Lab'da neler var",
+      "projectsSub": "Her projenin kendi sayfası ve repo'su var. Yenileri aynı ızgaraya oturuyor — yeniden tasarım yok.",
+      "tagLive": "Yayında",
+      "tagBuilding": "Geliştiriliyor",
+      "tagSoon": "Çok yakında",
+      "trDesc": "Claude okumadan önce gereksiz token'ları budayan bir Claude Skill — çevrimdışı, güvenli ve ölçülebilir.",
+      "projOpen": "Projeyi aç",
+      "trMetric": "<b>~40%</b> daha az girdi token'ı*",
+      "gfDesc": "Aktif geliştirmede olan yerel bir uygulama. Ayrıntılar çok yakında — repo'dan takip et.",
+      "projViewRepo": "Repo'yu görüntüle",
+      "gfMetric": "şimdilik özel",
+      "nextTitle": "Sıradaki araç",
+      "nextDesc": "Genellikle küçük ve kullanışlı bir şeyler yolda. Bu alan onun ineceği yer.",
+      "nextMetric": "Bu alanı izle",
+      "footnote": "*Örnekleme amaçlı: gereksiz girdilerde ISAS token'ların yaklaşık %40'ını budar — Claude Sonnet'te ayda 100M girdi token'ında ($3/1M) yaklaşık <b>$120/mo</b> eder. Gerçek tasarruf girdinize bağlıdır; araç size tam sayılarınızı bildirir.",
+      "langLabel": "Dil"
+    },
+    "ar": {
+      "metaTitle": "IsasLab — أدوات دقيقة وصادقة",
+      "metaDescription": "IsasLab مختبر صغير يبني برمجيات دقيقة وصادقة — أرقام حقيقية بدل التسويق. موطن ISAS Token Reducer وGatherfire وغيرها.",
+      "ogDescription": "مختبر صغير يبني برمجيات دقيقة وصادقة — أرقام حقيقية بدل التسويق.",
+      "navProjects": "المشاريع",
+      "navStar": "نجمة",
+      "heroTitle": "أدوات دقيقة وصادقة من <span class=\"lab\">IsasLab</span>",
+      "heroPitch": "مختبر بشخص واحد يبني برمجيات تعرض أرقاماً حقيقية بدل التسويق — أدوات صغيرة تؤدي مهمة واحدة وتثبتها.",
+      "builtBy": "من إنشاء Ismet Çakır",
+      "heroLicense": "الشيفرة متاحة · مجاني للاستخدام الشخصي",
+      "projectsEyebrow": "المشاريع",
+      "projectsTitle": "ما في المختبر",
+      "projectsSub": "لكل مشروع صفحته ومستودعه الخاص. المشاريع الجديدة تنضم إلى الشبكة نفسها — دون إعادة تصميم.",
+      "tagLive": "مباشر",
+      "tagBuilding": "قيد البناء",
+      "tagSoon": "قريباً",
+      "trDesc": "مهارة Claude تقلّم الرموز الزائدة قبل أن يقرأها Claude — دون اتصال، وآمنة، وقابلة للقياس.",
+      "projOpen": "افتح المشروع",
+      "trMetric": "<b>~40%</b> رموز إدخال أقل*",
+      "gfDesc": "تطبيق أصلي قيد التطوير النشط. التفاصيل قريباً — تابِع على المستودع.",
+      "projViewRepo": "عرض المستودع",
+      "gfMetric": "خاص حالياً",
+      "nextTitle": "الأداة التالية",
+      "nextDesc": "عادةً ما يكون هناك شيء صغير ومفيد قيد العمل. هذا المكان هو حيث يستقر.",
+      "nextMetric": "ترقّب هذا المكان",
+      "footnote": "*للتوضيح: على الإدخال الزائد، تقلّم ISAS نحو 40% من الرموز — أي حوالي <b>$120/mo</b> عند 100M رمز إدخال شهرياً على Claude Sonnet ($3/1M). التوفير الفعلي يعتمد على إدخالك؛ والأداة تُبلّغ بأرقامك الدقيقة.",
+      "langLabel": "اللغة"
+    },
+    "zh": {
+      "metaTitle": "IsasLab — 锐利、诚实的工具",
+      "metaDescription": "IsasLab 是一个小型实验室，打造锐利、诚实的软件——用真实数据说话，而非营销话术。ISAS Token Reducer、Gatherfire 等项目的所在地。",
+      "ogDescription": "一个小型实验室，打造锐利、诚实的软件——用真实数据说话，而非营销话术。",
+      "navProjects": "项目",
+      "navStar": "Star",
+      "heroTitle": "来自 <span class=\"lab\">IsasLab</span> 的锐利、诚实的工具",
+      "heroPitch": "一个单人实验室，打造用真实数据而非营销话术说话的软件——只做一件事并证明它的小工具。",
+      "builtBy": "由 Ismet Çakır 打造",
+      "heroLicense": "源码可见 · 个人使用免费",
+      "projectsEyebrow": "项目",
+      "projectsTitle": "实验室里有什么",
+      "projectsSub": "每个项目都有自己的页面和仓库。新项目直接接入同一网格——无需重新设计。",
+      "tagLive": "已上线",
+      "tagBuilding": "开发中",
+      "tagSoon": "即将推出",
+      "trDesc": "一个 Claude Skill，在 Claude 读取之前修剪冗余 token——离线、安全、可量化。",
+      "projOpen": "打开项目",
+      "trMetric": "<b>~40%</b> 更少的输入 token*",
+      "gfDesc": "一款正在积极开发中的原生应用。详情即将公布——在仓库中持续关注。",
+      "projViewRepo": "查看仓库",
+      "gfMetric": "暂不公开",
+      "nextTitle": "下一个工具",
+      "nextDesc": "通常总有一些小而有用的东西正在酝酿。这个位置就是它的落脚处。",
+      "nextMetric": "敬请关注",
+      "footnote": "*示意：面对冗余输入，ISAS 大约修剪 40% 的 token——在 Claude Sonnet 上以每月 100M 输入 token 计算（$3/1M），约合 <b>$120/mo</b>。实际节省取决于你的输入；工具会报告你的确切数字。",
+      "langLabel": "语言"
+    }
+  };
+
+  var SUPPORTED = ["en", "de", "es", "tr", "ar", "zh"];
+  var RTL = { ar: true };
+  var STORE_KEY = "isaslab-lang";
+
+  function normalize(code) {
+    return String(code || "").toLowerCase().split("-")[0];
+  }
+
+  function pickLang() {
+    // 1) explicit ?lang= override
+    try {
+      var q = new URLSearchParams(window.location.search).get("lang");
+      if (q && SUPPORTED.indexOf(normalize(q)) !== -1) return normalize(q);
+    } catch (e) {}
+    // 2) saved preference
+    try {
+      var saved = localStorage.getItem(STORE_KEY);
+      if (saved && SUPPORTED.indexOf(saved) !== -1) return saved;
+    } catch (e) {}
+    // 3) browser languages
+    var navs = (navigator.languages && navigator.languages.length)
+      ? navigator.languages : [navigator.language || "en"];
+    for (var i = 0; i < navs.length; i++) {
+      var c = normalize(navs[i]);
+      if (SUPPORTED.indexOf(c) !== -1) return c;
+    }
+    return "en";
+  }
+
+  function t(lang, key) {
+    var dict = I18N[lang] || {};
+    if (Object.prototype.hasOwnProperty.call(dict, key)) return dict[key];
+    return I18N.en[key];
+  }
+
+  function setMeta(selector, val) {
+    var m = document.querySelector(selector);
+    if (m && val != null) m.setAttribute("content", val);
+  }
+
+  function apply(lang) {
+    if (SUPPORTED.indexOf(lang) === -1) lang = "en";
+    var html = document.documentElement;
+    html.setAttribute("lang", lang);
+    html.setAttribute("dir", RTL[lang] ? "rtl" : "ltr");
+
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var v = t(lang, el.getAttribute("data-i18n"));
+      if (v != null) el.textContent = v;
+    });
+    document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+      var v = t(lang, el.getAttribute("data-i18n-html"));
+      if (v != null) el.innerHTML = v;
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+      var v = t(lang, el.getAttribute("data-i18n-aria"));
+      if (v != null) el.setAttribute("aria-label", v);
+    });
+
+    document.title = t(lang, "metaTitle");
+    setMeta('meta[name="description"]', t(lang, "metaDescription"));
+    setMeta('meta[property="og:description"]', t(lang, "ogDescription"));
+
+    var sel = document.getElementById("langSelect");
+    if (sel && sel.value !== lang) sel.value = lang;
+
+    try { localStorage.setItem(STORE_KEY, lang); } catch (e) {}
+  }
+
+  function init() {
+    var lang = pickLang();
+    var sel = document.getElementById("langSelect");
+    if (sel) {
+      sel.value = lang;
+      sel.addEventListener("change", function () { apply(sel.value); });
+    }
+    apply(lang);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
 
 <script>
 /* IsasLab shared behaviour (inlined). Live GitHub-stars badge:
