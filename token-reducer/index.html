@@ -383,24 +383,40 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
   .cta-strip { position: relative; max-width: 900px; margin: 0 auto; text-align: center; padding: 46px 28px; border-radius: 22px; border: 1px solid var(--border); background: radial-gradient(500px 200px at 50% 0%, var(--accent-soft), transparent 70%), var(--bg-card); box-shadow: var(--shadow); overflow: hidden; }
   .cta-strip h2 { font-size: clamp(28px, 4.8vw, 42px); letter-spacing: -0.03em; margin: 0 0 10px; font-weight: 680; text-wrap: balance; }
   .cta-strip p { color: var(--text-soft); margin: 0 auto 22px; max-width: 46ch; }
+  /* The command box: always shows the FULL line, wrapped at natural
+     "/" breakpoints (via <wbr>) instead of scrolling or truncating. */
   .cta-cmd {
-    position: relative; z-index: 1; max-width: 640px; margin: 0 auto 18px;
-    display: flex; align-items: center; gap: 10px;
-    background: var(--term-bg); border: 1px solid var(--term-border); border-radius: 12px;
-    padding: 14px 14px 14px 16px; font-family: var(--mono); font-size: 14.5px; line-height: 1.6; text-align: left; overflow: hidden;
+    position: relative; z-index: 1; max-width: 620px; margin: 0 auto 20px;
+    background: var(--term-bg); border: 1px solid var(--term-border); border-radius: 14px;
+    padding: 22px 26px; text-align: center;
   }
-  .cta-cmd code { color: var(--term-text); overflow-x: auto; white-space: nowrap; flex: 1; }
+  .cta-cmd code {
+    display: block; color: var(--term-text); font-family: var(--mono);
+    font-size: 15px; line-height: 1.75; white-space: normal; word-break: break-word;
+    overflow-wrap: break-word; user-select: all;
+  }
   .cta-cmd .p { color: #79c0ff; font-weight: 700; user-select: none; }
   .cta-cmd .tok-cmd { color: #79c0ff; } .cta-cmd .tok-url { color: #a5d6ff; } .cta-cmd .tok-pipe { color: #ff7b72; } .cta-cmd .tok-bash { color: #7ee787; }
-  .copybtn { flex: none; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; padding: 7px 11px; border-radius: 8px; border: 1px solid var(--term-border); background: color-mix(in srgb, var(--term-bg) 60%, #ffffff 8%); color: #c9d3df; transition: color .15s, border-color .15s; }
-  .copybtn:hover { color: #fff; border-color: #3a4150; }
-  .copybtn.done { color: #7ee787; border-color: #2c6b45; }
+
+  /* Copy button: its own prominent, centered, gradient pill — the clear
+     next action, not a cramped icon crammed into the terminal box. */
+  .copybtn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    font: inherit; font-size: 15.5px; font-weight: 700; cursor: pointer;
+    padding: 13px 26px; border-radius: 12px; border: 1px solid transparent;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #ffffff;
+    box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 38%, transparent);
+    transition: transform .12s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .copybtn:hover { transform: translateY(-1px); box-shadow: 0 12px 30px color-mix(in srgb, var(--accent) 52%, transparent); }
+  .copybtn:active { transform: translateY(1px); }
+  .copybtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .copybtn.done { background: linear-gradient(135deg, var(--ok), #2fae66); box-shadow: 0 8px 22px color-mix(in srgb, var(--ok) 38%, transparent); }
   .cta-note { color: var(--text-faint); font-size: 13px; margin-top: 4px !important; }
-  /* On phones, let the long install command wrap fully instead of hiding behind a scroll. */
-  @media (max-width: 560px) {
-    .cta-cmd { flex-direction: column; align-items: flex-start; gap: 8px; }
-    .cta-cmd code { white-space: normal; word-break: break-all; overflow-x: visible; width: 100%; }
-    .copybtn { align-self: stretch; min-height: 44px; }
+  @media (max-width: 480px) {
+    .cta-cmd { padding: 18px 18px; }
+    .cta-cmd code { font-size: 14px; }
+    .copybtn { width: 100%; }
   }
   .cta-hint { color: var(--text-soft); font-size: 14.5px; line-height: 1.55; margin: 0 auto 14px !important; max-width: 46ch; }
   .cta-hint b { color: var(--text); }
@@ -580,9 +596,12 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
           <p>For people comfortable with a terminal. This adds Token Reducer to Claude on your computer — it never asks for a password, a card, or an account, and nothing you write ever leaves your machine.</p>
           <p class="cta-hint">Using <b>Claude Code</b>? Just paste the line below — it installs the plugin from <a href="https://github.com/IsasLab/isas-token-reducer">github.com/IsasLab/isas-token-reducer</a> and you're good to go.</p>
           <div class="cta-cmd">
-            <code><span class="p">$</span> <span class="tok-cmd">curl</span> -fsSL <span class="tok-url">https://raw.githubusercontent.com/IsasLab/isas-token-reducer/main/install.sh</span> <span class="tok-pipe">|</span> <span class="tok-bash">bash</span></code>
-            <button class="copybtn" id="copyBtn" type="button" aria-label="Copy install command">Copy</button>
+            <code><span class="p">$</span> <span class="tok-cmd">curl</span> -fsSL <span class="tok-url">https://raw.githubusercontent.com/<wbr>IsasLab/<wbr>isas-token-reducer/<wbr>main/<wbr>install.sh</span> <span class="tok-pipe">|</span> <span class="tok-bash">bash</span></code>
           </div>
+          <button class="copybtn" id="copyBtn" type="button" aria-label="Copy install command">
+            <svg id="copyIcon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span id="copyLabel">Copy command</span>
+          </button>
           <p class="cta-note"><a href="https://github.com/IsasLab/isas-token-reducer/blob/main/install.sh">See exactly what this runs →</a></p>
           <p class="cta-note">Not comfortable with this? You don't need it to try the tool — <a href="#demo">the live demo above</a> does the same thing, right here, with nothing to install.</p>
         </div>
@@ -739,10 +758,21 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
   /* ============ Copy install command ============ */
   (function () {
     var btn = document.getElementById("copyBtn");
-    if (!btn) return;
+    var icon = document.getElementById("copyIcon");
+    var label = document.getElementById("copyLabel");
+    if (!btn || !icon || !label) return;
     var cmd = "curl -fsSL https://raw.githubusercontent.com/IsasLab/isas-token-reducer/main/install.sh | bash";
+    var COPY_ICON = icon.innerHTML;
+    var CHECK_ICON = '<path d="M20 6 9 17l-5-5"/>';
+    var resetTimer;
     btn.addEventListener("click", function () {
-      var done = function () { btn.textContent = "Copied"; btn.classList.add("done"); setTimeout(function () { btn.textContent = "Copy"; btn.classList.remove("done"); }, 1600); };
+      var done = function () {
+        clearTimeout(resetTimer);
+        icon.innerHTML = CHECK_ICON; label.textContent = "Copied!"; btn.classList.add("done");
+        resetTimer = setTimeout(function () {
+          icon.innerHTML = COPY_ICON; label.textContent = "Copy command"; btn.classList.remove("done");
+        }, 1800);
+      };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(cmd).then(done, done);
       } else {
