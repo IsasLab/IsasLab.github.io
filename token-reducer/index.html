@@ -906,7 +906,26 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
   var statusTimer;
   var level = "balanced";
 
-  function render(){
+  // Count-up for the big "% shorter" figure. Animates on discrete events
+  // (first scroll into view, loading an example) but sets instantly while
+  // typing so it never janks. Honors prefers-reduced-motion.
+  var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var pctRaf = 0;
+  function animatePct(target){
+    cancelAnimationFrame(pctRaf);
+    if (reducedMotion) { savePct.textContent = target + "%"; return; }
+    var start = null, dur = 1000;
+    function step(ts){
+      if (start === null) start = ts;
+      var t = Math.min(1, (ts - start) / dur);
+      var e = 1 - Math.pow(1 - t, 3); // easeOutCubic
+      savePct.textContent = (Math.round(target * e * 10) / 10) + "%";
+      if (t < 1) { pctRaf = requestAnimationFrame(step); } else { savePct.textContent = target + "%"; }
+    }
+    pctRaf = requestAnimationFrame(step);
+  }
+
+  function render(animate){
     var src = inEl.value;
     var out = src.trim() ? reduceText(src, level) : "";
     outEl.textContent = out;
@@ -914,7 +933,7 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
     var pct = tb > 0 ? Math.max(0, Math.round((1 - ta/tb) * 1000) / 10) : 0;
     inToks.textContent = tb + " words";
     outToks.textContent = ta + " words";
-    savePct.textContent = pct + "%";
+    if (animate && !reducedMotion) { animatePct(pct); } else { cancelAnimationFrame(pctRaf); savePct.textContent = pct + "%"; }
     saveTok.textContent = tb + " → " + ta;
     barFill.style.width = (tb > 0 ? (ta/tb*100) : 100) + "%";
     if (statusEl) {
@@ -926,17 +945,28 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
     }
   }
 
-  inEl.addEventListener("input", render);
+  inEl.addEventListener("input", function(){ render(false); });
   Array.prototype.forEach.call(document.querySelectorAll(".chip"), function(c){
     c.addEventListener("click", function(){
       inEl.value = EXAMPLES[c.getAttribute("data-example")] || "";
-      render();
+      render(true);
     });
   });
 
   // Seed with the "duplicated paragraphs" example so the page opens with a win.
   inEl.value = EXAMPLES.dupes;
-  render();
+  render(false);
+
+  // Count the "% shorter" figure up from 0 the first time the demo scrolls
+  // into view — the reduction reads as it happens.
+  if ("IntersectionObserver" in window && !reducedMotion) {
+    var ioPct = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) { animatePct(parseFloat(savePct.textContent) || 0); ioPct.disconnect(); }
+      });
+    }, { threshold: 0.6 });
+    ioPct.observe(savePct);
+  }
 })();
 </script>
 </body>
