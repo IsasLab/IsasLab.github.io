@@ -667,9 +667,6 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
     if (sel && sel.value !== lang) sel.value = lang;
 
     try { localStorage.setItem(STORE_KEY, lang); } catch (e) {}
-
-    // Let the count-up layer re-animate the metric numbers after a re-render.
-    try { document.dispatchEvent(new CustomEvent("isaslab:applied", { detail: { lang: lang } })); } catch (e) {}
   }
 
   function init() {
@@ -687,93 +684,6 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
   } else {
     init();
   }
-})();
-</script>
-
-<script>
-/* ============================================================
-   IsasLab count-up — the metric numbers (~40%, $120/mo) and the
-   GitHub star count tick up from 0 when they scroll into view.
-   "Real numbers over marketing", made literal. Vanilla, no deps.
-   - Honors prefers-reduced-motion (lands on the final value at once).
-   - Re-animates after a language switch (i18n rebuilds the markup,
-     firing "isaslab:applied"), and exposes IsasCountUp.run() so the
-     async stars badge can animate once its number arrives.
-   ============================================================ */
-(function () {
-  "use strict";
-  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var DUR = 1100;
-
-  // "≈40%" / "$120/mo" / "43.5k" -> {prefix, target, suffix, decimals, grouped}
-  function parse(text) {
-    var m = String(text == null ? "" : text).match(/^([^\d]*?)(\d[\d.,]*)(.*)$/);
-    if (!m) return null;
-    var grouped = m[2].indexOf(",") !== -1;
-    var clean = m[2].replace(/,/g, "");
-    var num = parseFloat(clean);
-    if (!isFinite(num)) return null;
-    return { prefix: m[1], target: num, suffix: m[3],
-             decimals: (clean.split(".")[1] || "").length, grouped: grouped };
-  }
-  function format(v, p) {
-    var s = v.toFixed(p.decimals);
-    if (p.grouped) {
-      var parts = s.split(".");
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      s = parts.join(".");
-    }
-    return p.prefix + s + p.suffix;
-  }
-  function run(node) {
-    if (!node || node._cuBusy) return;
-    var p = parse(node.textContent);
-    if (!p) return;
-    var final = format(p.target, p);
-    if (reduced || p.target === 0) { node.textContent = final; return; }
-    node._cuBusy = true;
-    var start = null;
-    function step(ts) {
-      if (start === null) start = ts;
-      var t = Math.min(1, (ts - start) / DUR);
-      var e = 1 - Math.pow(1 - t, 3); // easeOutCubic
-      node.textContent = format(p.target * e, p);
-      if (t < 1) { requestAnimationFrame(step); }
-      else { node.textContent = final; node._cuBusy = false; }
-    }
-    requestAnimationFrame(step);
-  }
-
-  // Scroll-triggered metric numbers: animate the bold value inside each box.
-  var BOXES = [".proj-metric[data-i18n-html]", ".footnote[data-i18n-html]"];
-  var io = null;
-  function valOf(box) { return box.querySelector("b") || box; }
-  function observe() {
-    var boxes = [];
-    BOXES.forEach(function (sel) {
-      var el = document.querySelector(sel);
-      if (el) boxes.push(el);
-    });
-    if (!boxes.length) return;
-    if (!("IntersectionObserver" in window)) { boxes.forEach(function (b) { run(valOf(b)); }); return; }
-    if (io) io.disconnect();
-    io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { run(valOf(en.target)); io.unobserve(en.target); }
-      });
-    }, { threshold: 0.6 });
-    boxes.forEach(function (b) { io.observe(b); });
-  }
-
-  // Re-run when i18n re-renders (language switch rebuilds the <b> nodes).
-  document.addEventListener("isaslab:applied", observe);
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", observe);
-  } else {
-    observe();
-  }
-
-  window.IsasCountUp = { run: run };
 })();
 </script>
 
@@ -797,7 +707,6 @@ h2.sec-title { text-align: center; font-size: clamp(26px, 4.6vw, 40px); letter-s
       .then(function (data) {
         if (data && typeof data.stargazers_count === "number") {
           countEl.textContent = fmt(data.stargazers_count);
-          if (window.IsasCountUp) window.IsasCountUp.run(countEl);
           el.setAttribute("aria-label", data.stargazers_count + " GitHub stars");
         }
       })
